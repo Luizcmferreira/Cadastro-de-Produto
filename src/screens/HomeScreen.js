@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 export default function HomeScreen({navigation}) {
     return (
       <View style={styles.container}>
-        <Text style={styles.title}>Gerenciador de Produtos</Text>
+        <Text style={styles.title}>Aplicativo de controle de usuário para melhorar o acompanhamento.</Text>
 
         <TouchableOpacity
           style={styles.styleButtom}
@@ -14,9 +14,9 @@ export default function HomeScreen({navigation}) {
 
         <TouchableOpacity
           style={styles.styleButtom}
-          onPress={()=> navigation.navigate("Lista")}  
+          onPress={()=> navigation.navigate("Detalhes")}  
         >
-        <Text style={styles.buttomText}>Listar Produtos</Text>
+        <Text style={styles.buttomText}>Detalhes do usuário</Text>
         </TouchableOpacity>
     
       </View>
@@ -32,7 +32,7 @@ export default function HomeScreen({navigation}) {
     },
 
     title:{
-      fontSize: 25,
+      fontSize: 18,
       fontWeight:'bold',
       marginTop:40,
       marginBottom: 20

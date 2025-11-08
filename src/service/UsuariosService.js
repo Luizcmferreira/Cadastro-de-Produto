@@ -17,21 +17,21 @@ const produtosCollection = collection(db,'produtos')
 
 
 //Criar produto
-export const criarProduto = async (produto) => {
+export const criarUsuario = async (usuario) => {
     const payload ={
-        nome: produto.nome,
-        preco: produto.preco,
-        decricao: produto.preco,
+        nome: usuario.nome,
+        cpf: usuario.cpf,
+        decricao: usuario.cpf,
         createdAt: serverTimestamp()
     };
-    const ref = await addDoc(produtosCollection,payload);
+    const ref = await addDoc(usuariosCollection,payload);
     return ref.id;
 }
 
 // ler todos
-export const subscribeProdutos = (callback) => {
+export const subscribeUsuarios = (callback) => {
 
-    const q = query(produtosCollection, orderBy("createdAt", "desc"));
+    const q = query(usuariosCollection, orderBy("createdAt", "desc"));
     return onSnapshot(q, (snapshot) => {
         const itens = snapshot.docs.map((d) => ({id: d.id, ...d.data()}));
         callback(itens);
@@ -40,14 +40,14 @@ export const subscribeProdutos = (callback) => {
 };
 
 //ler todos
-export const obterProdutos = async () => {
-    const snap = await getDocs (produtosCollection);
+export const obterUsuarios = async () => {
+    const snap = await getDocs (usuariosCollection);
     return snap.docs.map((d) => ({id: d,id, ...d.data()}));
 
 };
 
 //ler um por id
-export const obterProdutosPorId = async (id) => {
+export const obterUsuariosPorId = async (id) => {
     const docRef = doc(db, "produtos", id);
     const d = await getDoc(docRef);
     if (!d.exists()) return null;
@@ -55,7 +55,7 @@ export const obterProdutosPorId = async (id) => {
 };
 
 //atualizar 
-export const atualizarProduto = async (id, dados) => {
+export const atualizarUsuario = async (id, dados) => {
     const docRef= doc(db, "produtos", id);
     await updateDoc(docRef, { ...dados, updateAt: serverTimestamp()});
 };

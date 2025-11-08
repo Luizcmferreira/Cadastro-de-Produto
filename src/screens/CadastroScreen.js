@@ -1,62 +1,77 @@
 import { Alert, Button, Platform, StyleSheet, Text, TextInput, View } from "react-native";
 import React, {useState} from "react";
-import { criarProduto} from "../service/ProdutosService";
+import { criarUsuario } from "../service/UsuariosService";
 
 export default function CadastroScreen() {
-    const [nome, setNome] = useState("");
-    const [preco, setPreco] = useState("");
+    const [usuario, setUsuario] = useState("");
+    const [ cpf, setCpf] = useState ("");
+    const [ email, setEmail] = useState ("");
     const [descricao, setDescricao] = useState("");
 
     const handlerCadastro = async() =>{
-      if (nome==="" || preco==="" || descricao===""){
+      if (usuario==="" || cpf==="" || email==="" || descricao===""){
         Platform.OS ==="web"
         ? window.alert("Por favor, preencha todos os campos.")
         :Alert.alert("Erro!", "Por favor, preencha todos os campos.");
         return;
       }
 
-      const precoConvertido = parseFloat(preco);
-      if (isNaN(precoConvertido)){
-        Platform.OS ==="web"
-        ? window.alert("Digite um preço válido.")
-        :Alert.alert("Erro!", "Digite um preço válido.");
-        return;
-    }
+      
+    
 
     const novo = {
-      nome,
-      preco: precoConvertido,
+      usuario,
+      cpf,
+      email,
       descricao,
     };
 
     try{
-      const id = await criarProduto(novo);
+      const id = await criarUsuario(novo);
       Platform.OS ==="web"
-      ? window.alert("Produto cadastrado com sucesso!")
-      :Alert.alert("Sucesso!", "Produto cadastrado com sucesso!");
+      ? window.alert("Usuário cadastrado com sucesso!")
+      :Alert.alert("Sucesso!", "Usuário cadastrado com sucesso!");
   
-      setNome("");
-      setPreco("");
+      setUsuario("");
+      setCpf("");
+      setEmail("");
       setDescricao("");
 
     }catch(error){
-      console.error("Erro ao cadastrar produto: ",error);
+      console.error("Erro ao cadastrar usuário: ",error);
       Platform.OS ==="web"
-      ? window.alert("Erro ao cadastrar o produto, Tente novamente.")
-      :Alert.alert("Erro", "Erro ao cadastrar o produto, Tente novamente.");
+      ? window.alert("Erro ao cadastrar o usuário, Tente novamente.")
+      :Alert.alert("Erro", "Erro ao cadastrar o usuário, Tente novamente.");
     }
-    
+  
+  
    
   };
     return (
 
       <View style={styles.container}>
-        <Text style={styles.styleText}>Nome do Produto</Text>
+        <Text style={styles.styleText}>Nome do Usuário</Text>
         <TextInput 
         style={styles.input}
-        value={nome}
-        onChangeText={setNome}
-        placeholder="Digite o nome do produto"
+        value={usuario}
+        onChangeText={setUsuario}
+        placeholder="Digite o nome do usuário"
+        />
+
+        <Text style={styles.styleText}>CPF</Text>
+        <TextInput 
+        style={styles.input}
+        value={cpf}
+        onChangeText={setCpf}
+        placeholder="Digite o CPF do usuário"
+        />
+
+        <Text style={styles.styleText}>Email</Text>
+        <TextInput 
+        style={styles.input}
+        value={email}
+        onChangeText={setEmail}
+        placeholder="Digite o email do usuário"
         />
 
         <Text style={styles.styleText}>Descrição</Text>
@@ -64,17 +79,11 @@ export default function CadastroScreen() {
         style={styles.input}
         value={descricao}
         onChangeText={setDescricao}
-        placeholder="Detalhes do Produto" 
+        placeholder="Detalhes do Usuário" 
         multiline
         />
 
-        <Text style={styles.styleText}>Preço</Text>
-        <TextInput
-        style={styles.input}
-        value={preco}
-        onChangeText={setPreco}
-        placeholder="Preço do produto"
-        />
+      
 
         <Button title="Cadastrar" onPress={handlerCadastro}/>
       
@@ -101,4 +110,4 @@ export default function CadastroScreen() {
       marginBottom: 10,
       borderRadius: 5,
     },
-  })
+})

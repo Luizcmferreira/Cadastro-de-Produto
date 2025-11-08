@@ -3,7 +3,6 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import HomeScreen from './src/screens/HomeScreen';
-import ListaScreen from './src/screens/ListaScreen';
 import CadastroScreen from './src/screens/CadastroScreen';
 import DetalhesScreen from './src/screens/DetalhesScreen'; 
 
@@ -17,7 +16,6 @@ export default function App() {
         <Stack.Navigator initialRouteName='Home'>
         <Stack.Screen name = 'Home' component={HomeScreen}/>
         <Stack.Screen name = 'Cadastro' component={CadastroScreen}/>
-        <Stack.Screen name = 'Lista' component={ListaScreen}/>
         <Stack.Screen name='Detalhes' component={DetalhesScreen}/>
         </Stack.Navigator>
       </NavigationContainer>

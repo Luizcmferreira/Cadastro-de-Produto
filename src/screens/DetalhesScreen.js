@@ -7,47 +7,40 @@ import {db} from "../service/firebaseConnections";
 
 
 export default function DetalhesScreen({route, navigation}) {
-  const {idproduto} = route.params;
+  const {idusuario} = route.params;
  
-  const [produto, setProduto] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [editando, setEditando] = useState(false);
-
-  const [nome, setNome] = useState("");
-  const [preco, setPreco] = useState("");
+  const [usuario, setUsuario] = useState("");
   const [descricao, setDescricao] = useState("");
 
   useEffect(() => {
-    const carregarProduto = async() =>{
+    const carregarUsuario = async() =>{
       try{
-        const docRef = doc(db, "produtos", idproduto);
+        const docRef = doc(db, "usuario", idusuario);
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()){
           const data = docSnap.data();
           
-          setProduto(data);
-          setNome(data.nome);
-          setPreco(String(data.preco));
+          setNome(data.usuario);
           setDescricao(data.descricao);
         } else {
-          Alert.alert("Erro", "Produto não encontrado!");
+          Alert.alert("Erro", "Usuário não cadastrado!");
           navigation.goBack();
         }
       } catch (error) {
-          console.error("Erro ao carregar produto: ", error);
-          Alert.alert("Erro", "Não foi possível carregar o produto.");
+          console.error("Erro ao buscar usuário: ", error);
+          Alert.alert("Erro", "Não foi possível buscar o usuário.");
       } finally {
           setLoading(false);
       }
 
         
     };
-    carregarProduto();
+    carregarUsuario();
   }, []);
 
   const handleAtualizar = async () => {
-    if (!nome || !preco || !descricao) {
+    if (!nome || !descricao) {
       Platform.OS === "web"
           ? window.alert("Preencha todos os campos antes de atualizar!")
           : Alert.alert("Aviso", "Preencha todos os campos antes de atualizar!")
@@ -55,53 +48,53 @@ export default function DetalhesScreen({route, navigation}) {
     }
   
     try {
-      const produtoRef = doc(db, "produtos", idproduto);
-      await updateDoc(produtoRef, {
+      const usuarioRef = doc(db, "usuário", idusuario);
+      await updateDoc(usuarioRef, {
         nome,
         preco: parseFloat(preco),
         descricao,
       });
         Platform.OS === "web"  
-            ? window.alert("Produto atualizado com sucesso!")
-            : Alert.alert("Sucesso", "Produto atualizado com sucesso!");
+            ? window.alert("Usuário atualizado com sucesso!")
+            : Alert.alert("Sucesso", "Usuário atualizado com sucesso!");
       setEditando(false);
     } catch (error) {
       console.error("Erro ao atualizar:", error);
        Platform.OS === "web"
-            ? window.alert("Não foi possível atualizar o produto.")
-            : Alert.alert("Erro", "Não foi possível atualizar o produto.");
+            ? window.alert("Não foi possível atualizar o usuário.")
+            : Alert.alert("Erro", "Não foi possível atualizar o usuário.");
     }
   };
 
   const handlerExcluir = async ( ) => {
     if (Platform.OS === "web") {
-      const confirmar = window.confirm("Deseja realmente excluir este produto?");
+      const confirmar = window.confirm("Deseja realmente excluir este usuário?");
       if (!confirmar) return;
     
       try{
-        const produtoRef = doc(db, "produtos", idproduto);
-        await deleteDoc (produtoRef);
-        alert("Produto excluído com sucesso!");
+        const produtoRef = doc(db, "usuário", idusuario);
+        await deleteDoc (usuarioRef);
+        alert("Usuário excluído com sucesso!");
         navigation.goBack();
       }catch(error) {
           console.error("Erro ao deletar: ", error);
-          Alert.alert("Não foi possível excluir o produto. ");
+          Alert.alert("Não foi possível excluir o usuário. ");
         }
     } else {
-        Alert.alert("Confirmação", "Deseja realmente excluir este produto?", [
+        Alert.alert("Confirmação", "Deseja realmente excluir este usuário?", [
           {text: "Cancelar", style: "cancel"},
             {
               text: "Excluir",
               style: "destructive",
             onPress: async() =>{
               try {
-              const produtoRef = doc(db, "produtos", idproduto);
-              await deleteDoc(produtoRef);
-              Alert.alert("Excluído", "Produto removido com sucesso!");
+              const usuarioRef = doc(db, "usuário", idusuario);
+              await deleteDoc(usuarioRef);
+              Alert.alert("Excluído", "Usuário removido com sucesso!");
               navigation.goBack();
             } catch (error){
               console.error("Erro ao deletar:", error);
-              Alert.alert("Erro", "Não foi possível deletar o produto.");
+              Alert.alert("Erro", "Não foi possível deletar o usuário.");
             }
         
             },
